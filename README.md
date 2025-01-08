@@ -41,7 +41,8 @@ pip install pandas numpy matplotlib seaborn scikit-learn statsmodels lazypredict
 3. Run the cells sequentially to preprocess the data, train models, and evaluate results.
 
 ## Author
-*Name not provided.* Feel free to include your name or organization here.
+Shefali Dhingra
+Ashish Michael Chauhan
 
 ## Acknowledgments
 This project uses open-source libraries and draws inspiration from machine learning best practices and statistical analysis techniques.
