@@ -1,50 +1,140 @@
 # Supervised Learning Models for Classification & Regression: Predicting Import-Export Dynamics
 
-## Description
-This project demonstrates the application of supervised learning models for both classification and regression tasks. The primary focus is on predicting import-export dynamics using various machine learning techniques. The notebook includes data preprocessing, feature engineering, model building, and evaluation steps.
-
-## Features
-- Implementation of statistical techniques (e.g., coefficient of variation, confidence intervals).
-- Application of popular supervised learning models.
-- Use of visualization tools to explore data and evaluate models.
-
-## Libraries Used
-The following libraries are utilized in the project:
-
-- `pandas` - Data manipulation and analysis
-- `numpy` - Numerical computations
-- `matplotlib.pyplot` - Data visualization
-- `seaborn` - Statistical data visualization
-- `sklearn` - Machine learning algorithms and utilities
-- `statsmodels` - Statistical modeling and hypothesis testing
-- `lazypredict` - Quick modeling and baseline comparison
-- `scipy` - Statistical and clustering tools
-- `time` - Timing utility
-- `warnings` - Warnings management
-
-## Key Functions
-- `coefficient_of_variation(data)`: Calculates the coefficient of variation for the given data.
-- `confidence_interval(data, confidence=0.95)`: Computes the confidence interval for the provided data.
-- `categorical_correlation_matrix(df, columns, method='spearman')`: Computes a correlation matrix for categorical variables using a specified method.
-- `get_model_run_stats(model, X_train, y_train, X_test)`: Extracts performance metrics for a given model.
-
-## Installation
-To run this project, install the required Python libraries. You can use the following command:
-
-```bash
-pip install pandas numpy matplotlib seaborn scikit-learn statsmodels lazypredict
-```
-
-## Usage
-1. Clone the repository and navigate to the project directory.
-2. Open the Jupyter notebook file (`MLM_Project_043.ipynb`).
-3. Run the cells sequentially to preprocess the data, train models, and evaluate results.
-
-## Author
-Shefali Dhingra
-  
-## Acknowledgments
-This project uses open-source libraries and draws inspiration from machine learning best practices and statistical analysis techniques.
+## Project Contents
+- Project Information  
+- Description of Data  
+- Data Sampling  
+- Project Objectives | Problem Statements  
+- Analysis of Data  
+- Observations | Findings  
+- Managerial Insights | Recommendations   
 
 ---
-Feel free to customize this README further to include dataset details, specific model results, or any additional context for your project.
+
+## Description of Data
+
+The dataset records international trade transactions, covering both **imports** and **exports**, with comprehensive details on products, countries, shipping methods, and more.
+
+**Data Format:** CSV  
+
+**Data Type:** Panel Data (longitudinal), recording multiple entities (countries) over time.
+
+**Columns:**
+- **Identifiers:** `Transaction_ID`, `Invoice_Number`
+- **Categorical:** `Country`, `Product`, `Import_Export`, `Category`, `Port`, `Customer`, `Supplier`, `Customs_Code`, `Payment_Terms`, `Shipping_Method`
+- **Numerical:**  
+  - Integer: `Quantity`, `Customs_Code`, `Invoice_Number`  
+  - Float: `Value`, `Weight`  
+- **Datetime:** `Date`
+- **Derived:** `Total_Value` (Quantity × Value)
+
+---
+
+## Data Sampling
+- **Original Dataset Size:** 15,000 records  
+- **Sample Used (Unique sample):** 5,001 records  
+- **Reason:** Manageable size for exploration while retaining variability.  
+
+---
+
+## Project Objectives
+1. Classify the dataset into **segments/clusters/classes** using supervised learning algorithms.
+2. Identify **important/contributing variables** and their **thresholds** for classification.
+3. Determine the **best classification model** based on performance metrics.
+
+---
+
+## Data Analysis & Preprocessing
+
+### 1 Data Preprocessing
+- No missing values in dataset
+- **Ordinal Encoding** for:
+  - `Payment_Terms`: COD → 0, Net 30 → 1, Net 60 → 2, Prepaid → 3  
+  - `Shipping_Method`: Air → 0, Land → 1, Sea → 2  
+  - `Import/Export`: Export → 0, Import → 1  
+- **Scaling:** Min-Max Scaling for all numerical variables (range: 0–1).  
+
+### 2 Exploratory Data Analysis
+- **Numerical Variables:** Symmetric distributions for most variables except `Total_Value` (slight positive skew).
+- **Correlation Insights:**
+  - `Quantity` & `Value` strongly correlate with `Total_Value` (~0.65 each).
+  - `Weight` has negligible correlation with other features.
+  - Minimal multicollinearity observed.
+- **Categorical Variables:** Highly diverse distributions, especially for `Country`, `Product`, and `Port`.
+- **Inferential Stats:** Only `Shipping_Method` showed a significant association with `Import/Export`.
+
+---
+
+## Machine Learning Models
+
+### Models Tested
+- **Regression-Based:** Logistic Regression (LR)  
+- **Tree-Based:** Decision Tree (DT), Random Forest (RF)  
+- **Distance-Based:** K-Nearest Neighbors (KNN)  
+- **Margin-Based:** Support Vector Machine (SVM)  
+- **Others:** Naive Bayes, SGD, Bagging, Boosting  
+
+### Performance Summary (Top Models)
+| Model            | Avg. CV Score | Key Features Identified |
+|------------------|--------------|-------------------------|
+| **Random Forest** | **0.5221**   | Invoice Number, Weight, Value, Quantity, Total_Value |
+| **Decision Tree** | 0.5065       | Invoice Number, Weight, Value, Total_Value, Quantity, Payment_Terms |
+| Logistic Regression | 0.5005    | None |
+| KNN               | 0.5023       | None |
+| SVM               | 0.4995       | None |
+
+---
+
+## Observations & Findings
+
+### Key Takeaways
+- **Best Overall Models:** Random Forest & Decision Tree.  
+- **Most Interpretable:** Decision Tree (clear feature importance).  
+- **Stable Performance:** Random Forest across folds.  
+- **Top Predictors:** `Invoice_Number`, `Weight`, `Value`, `Quantity`, `Total_Value`.
+
+### Dropped Features
+- Low relevance: `Country`, `Product`, `Category`, `Port`, `Customer`, `Supplier`, `Customs_Code`.
+
+---
+
+## Managerial Insights & Recommendations
+
+### Data Preparation
+- Use **One-Hot Encoding** for nominal categorical variables in the future.
+- Continue **Min-Max Scaling** for numerical features.
+- Outlier handling (IQR/Z-score) and log transformation for skewed variables (e.g., `Total_Value`).
+
+### Model Recommendations
+- **Decision Tree:**  
+  - Use for interpretability.  
+  - Focus on thresholds > 0.7 for high-importance features like `Invoice_Number` & `Weight`.
+- **Random Forest:**  
+  - Use for accuracy and stability.  
+  - Best suited when interpretability is secondary.
+- **Logistic Regression & SVM:**  
+  - Less effective for this dataset.
+- **KNN:**  
+  - Avoid for large/high-dimensional datasets.
+
+---
+
+## Conclusion
+This project demonstrates how supervised learning models can classify import/export transactions and identify key influencing factors. **Random Forest** emerged as the top-performing model, with **Decision Tree** offering the highest interpretability for managerial decision-making.
+
+---
+
+## Resources
+- **Code & Analysis:** Python Notebooks (Pandas, Scikit-learn, Lazy Predict)
+- **Visualizations:** Bar Charts, Heatmaps, Histograms, Correlation Matrices
+
+---
+
+## Tools & Libraries
+- Python (Pandas, NumPy, Scikit-learn)
+- Lazy Predict (Model Benchmarking)
+- Matplotlib / Seaborn (Visualization)
+
+---
+**Author:** Shefali Dhingra
+```
