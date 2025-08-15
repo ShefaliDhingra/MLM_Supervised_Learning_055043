@@ -1,16 +1,5 @@
 # Supervised Learning Models for Classification & Regression: Predicting Import-Export Dynamics
 
-## Project Contents
-- Project Information  
-- Description of Data  
-- Data Sampling  
-- Project Objectives | Problem Statements  
-- Analysis of Data  
-- Observations | Findings  
-- Managerial Insights | Recommendations   
-
----
-
 ## Description of Data
 
 The dataset records international trade transactions, covering both **imports** and **exports**, with comprehensive details on products, countries, shipping methods, and more.
@@ -137,4 +126,3 @@ This project demonstrates how supervised learning models can classify import/exp
 
 ---
 **Author:** Shefali Dhingra
-```
